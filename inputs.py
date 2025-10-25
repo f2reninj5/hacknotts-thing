@@ -25,17 +25,21 @@ sliders = [
 ]
 
 
-def sliders_to_bytes():
+def get_slider_bytes():
     return [slider.value for slider in sliders]
 
 
-def buttons_to_bytes():
-    button_bytes = []
-    for i in range((len(buttons) // 8) + 1):
-        byte = 0
-        buttons_chunk = buttons[i * 8 : (i + 1) * 8]
-        for button in buttons_chunk:
-            if button.value:
-                byte |= 1 << (i * 8)
-                button_bytes.append(byte)
-    return button_bytes
+def get_button_bytes():
+    return [1 if button.value else 0 for button in buttons]
+
+
+# def buttons_to_bytes():
+#     button_bytes = []
+#     for i in range((len(buttons) // 8) + 1):
+#         byte = 0
+#         buttons_chunk = buttons[i * 8 : (i + 1) * 8]
+#         for button in buttons_chunk:
+#             if button.value:
+#                 byte |= 1 << (i * 8)
+#                 button_bytes.append(byte)
+#     return button_bytes

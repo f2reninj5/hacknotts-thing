@@ -1,23 +1,20 @@
 import usb_cdc
-
-usb_cdc.enable(console=False, data=True)
-
 import struct
 import time
-from inputs import buttons_to_bytes, sliders_to_bytes
+from inputs import get_button_bytes, get_slider_bytes
 
 data = usb_cdc.data
 
 while True:
     if data.in_waiting > 0:
-        msg = data.read(data.in_waiting)
-        if msg.decode() == "go":
+        msg = data.read(data.in_waiting).decode().strip()
+        if msg == "go":
             break
+    time.sleep(0.01)
 
 while True:
-    button_bytes = buttons_to_bytes()
-    slider_bytes = sliders_to_bytes()
-    struct_format = "<" + "B" * len(button_bytes) + "H" * len(slider_bytes)
-    payload = struct.pack(struct_format, *button_bytes, *slider_bytes)
-    usb_cdc.data.write(payload)
-    time.sleep(0.1)
+    button_bytes = get_button_bytes()
+    slider_bytes = get_slider_bytes()
+    payload = struct.pack("<BBBHHH", *button_bytes, *slider_bytes)
+    data.write(payload)
+    time.sleep(0.01)
