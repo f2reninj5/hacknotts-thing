@@ -12,6 +12,7 @@ def find_pico():
 
 NUM_BUTTONS = 3
 NUM_SLIDERS = 3
+
 NUM_BUTTON_BYTES = (NUM_BUTTONS // 8) + 1
 NUM_SLIDER_BYTES = NUM_SLIDERS * 2
 STRUCT_SIZE = NUM_BUTTON_BYTES + NUM_SLIDER_BYTES
@@ -19,6 +20,8 @@ struct_format = "<" + "B" * NUM_BUTTON_BYTES + "H" * NUM_SLIDER_BYTES
 
 if __name__ == "__main__":
     ser = serial.Serial(find_pico(), 115200, timeout=1)
+
+    ser.write("go".encode())
 
     while True:
         data = ser.read(STRUCT_SIZE)

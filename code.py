@@ -1,11 +1,18 @@
-import struct
-
-from inputs import buttons_to_bytes, sliders_to_bytes
 import usb_cdc
-import time
 
-usb_cdc.enable(console=True, data=True)
+usb_cdc.enable(console=False, data=True)
+
+import struct
+import time
+from inputs import buttons_to_bytes, sliders_to_bytes
+
 data = usb_cdc.data
+
+while True:
+    if data.in_waiting > 0:
+        msg = data.read(data.in_waiting)
+        if msg.decode() == "go":
+            break
 
 while True:
     button_bytes = buttons_to_bytes()
