@@ -1,12 +1,22 @@
 import serial
 import struct
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 
-if __name__ == "__main__":
-    ser = serial.Serial("COM3", 115200, timeout=1)
+app = FastAPI()
 
-    ser.write("go".encode())
+ser = serial.Serial("COM3", 115200, timeout=1)
 
-    while True:
-        data = ser.read(9)
-        values = struct.unpack("<BBBHHH", data)
-        print(values)
+ser.write("go".encode())
+
+
+@app.websocket("/pico")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+
+    try:
+        while True:
+            data = ser.read(9)
+            values = struct.unpack("<BBBHHH", data)
+            await websocket.send_json({data: list(values)})
+    except WebSocketDisconnect:
+        print("Disconnected")

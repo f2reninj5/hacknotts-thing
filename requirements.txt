@@ -1,3 +1,4 @@
+fastapi
 pyserial
 black==25.9.0
 circuitpython-stubs==10.1.0a0
