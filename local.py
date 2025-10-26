@@ -5,7 +5,6 @@ if __name__ == "__main__":
     ser = serial.Serial("COM3", 115200, timeout=1)
 
     ser.write("go".encode())
-    ser.reset_input_buffer()
 
     while True:
         data = ser.read(9)

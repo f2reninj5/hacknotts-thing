@@ -3,6 +3,7 @@ import struct
 import time
 from inputs import get_button_bytes, get_slider_bytes
 
+usb_cdc.enable(console=False, data=True)
 data = usb_cdc.data
 
 while True:
