@@ -17,6 +17,6 @@ async def websocket_endpoint(websocket: WebSocket):
         while True:
             data = ser.read(9)
             values = struct.unpack("<BBBHHH", data)
-            await websocket.send_json({data: list(values)})
+            await websocket.send_json({"data": list(values)})
     except WebSocketDisconnect:
         print("Disconnected")
